@@ -31,6 +31,12 @@ private:
 
 	void LookUp(float AxisValue);
 
+	void LookUpRate(float AxisValue);
+	
+	void LookRightRate(float AxisValue);
+
 	void MoveRight(float AxisValue);
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Movement")
+	float RotationRate;
 };
