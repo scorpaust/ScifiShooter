@@ -14,4 +14,7 @@ class SCIFISHOOTER_API AScifiShooterGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
 	
+public:
+
+	virtual void PawnKilled(APawn* PawnKilled);
 };

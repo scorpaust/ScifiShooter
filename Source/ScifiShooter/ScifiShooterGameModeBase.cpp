@@ -3,3 +3,9 @@
 
 #include "ScifiShooterGameModeBase.h"
 
+
+void AScifiShooterGameModeBase::PawnKilled(APawn* PawnKilled) {
+
+
+
+}
