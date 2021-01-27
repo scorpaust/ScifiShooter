@@ -20,8 +20,21 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	void Shoot();
+
+	virtual float TakeDamage
+	(
+		float DamageAmount,
+		struct FDamageEvent const& DamageEvent,
+		class AController* EventInstigator,
+		AActor* DamageCauser
+	) override;
+
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	UFUNCTION(BlueprintPure)
+	bool IsDead() const;
 
 protected:
 	// Called when the game starts or when spawned
@@ -42,12 +55,16 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Movement")
 	float RotationRate;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Stats")
+	float MaxHealth;
+
+	UPROPERTY(VisibleAnywhere, Category = "Stats")
+	float Health;
+
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AGun> GunClass;
 
 	UPROPERTY()
 	AGun* Gun;
-
-	void Shoot();
 
 };
