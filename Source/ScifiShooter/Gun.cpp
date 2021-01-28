@@ -45,35 +45,13 @@ void AGun::PullTrigger() {
 
 	UGameplayStatics::SpawnEmitterAttached(MuzzleFlash, Mesh, TEXT("MuzzleFlashSocket"));
 
-	APawn* OwnerPawn = Cast<APawn>(GetOwner());
-
-	if (!ensure(OwnerPawn != nullptr)) return;
-
-	AController* OwnerController = OwnerPawn->GetController();
-
-	if (!ensure(OwnerController != nullptr)) return;
-
-	FVector Location;
-	
-	FRotator Rotation;
-
-	OwnerController->GetPlayerViewPoint(Location, Rotation);
-
-	FVector End = Location + Rotation.Vector() * MaxRange;
-
 	FHitResult Hit;
 
-	FCollisionQueryParams Params;
+	FVector ShotDirection;
 
-	Params.AddIgnoredActor(this);
+	bool bSuccess = GunTrace(Hit, ShotDirection);
 
-	Params.AddIgnoredActor(GetOwner());
-
-	bool bSuccess = GetWorld()->LineTraceSingleByChannel(Hit, Location, End, ECollisionChannel::ECC_GameTraceChannel1, Params);
-
-	if (bSuccess) {
-
-		FVector ShotDirection = -Rotation.Vector();
+	if (bSuccess && GetOwnerController() != nullptr) {
 
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactFx, Hit.Location, ShotDirection.Rotation());
 
@@ -81,8 +59,42 @@ void AGun::PullTrigger() {
 
 		if (!ensure(Hit.GetActor() != nullptr)) return;
 
-		Hit.GetActor()->TakeDamage(Damage, DamageEvent, OwnerController, this);
+		Hit.GetActor()->TakeDamage(Damage, DamageEvent, GetOwnerController(), this);
 	}
+
+}
+
+bool AGun::GunTrace(FHitResult& Hit, FVector& ShotDirection) {
+
+	FVector Location;
+
+	FRotator Rotation;
+
+	if (GetOwnerController() == nullptr) return false;
+
+	GetOwnerController()->GetPlayerViewPoint(Location, Rotation);
+
+	ShotDirection = -Rotation.Vector();
+
+	FVector End = Location + Rotation.Vector() * MaxRange;
+
+	FCollisionQueryParams Params;
+
+	Params.AddIgnoredActor(this);
+
+	Params.AddIgnoredActor(GetOwner());
+
+	return GetWorld()->LineTraceSingleByChannel(Hit, Location, End, ECollisionChannel::ECC_GameTraceChannel1, Params);
+
+}
+
+AController* AGun::GetOwnerController() const {
+
+	APawn* OwnerPawn = Cast<APawn>(GetOwner());
+
+	if (OwnerPawn == nullptr) return nullptr;
+
+	return OwnerPawn->GetController();	
 
 }
 

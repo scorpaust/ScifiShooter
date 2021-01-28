@@ -20,6 +20,8 @@ public:
 
 	virtual void Tick(float DeltaSeconds) override;
 
+	bool IsDead() const;
+
 protected:
 
 	virtual void BeginPlay() override;
