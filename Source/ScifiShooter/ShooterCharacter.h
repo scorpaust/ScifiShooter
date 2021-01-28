@@ -61,6 +61,9 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "Stats")
 	float Health;
 
+	UFUNCTION(BlueprintPure)
+	float GetHealthPercent() const;
+
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AGun> GunClass;
 
