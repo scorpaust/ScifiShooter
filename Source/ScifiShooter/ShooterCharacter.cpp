@@ -15,6 +15,7 @@ AShooterCharacter::AShooterCharacter()
 	RotationRate = 10.f;
 
 	MaxHealth = 100.f;
+
 }
 
 // Called when the game starts or when spawned
@@ -31,6 +32,7 @@ void AShooterCharacter::BeginPlay()
 	Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
 
 	Gun->SetOwner(this);
+
 }
 
 bool AShooterCharacter::IsDead() const {
@@ -100,12 +102,11 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 void AShooterCharacter::MoveForward(float AxisValue) {
 
-	if (AxisValue != 0.f) {
+		if (AxisValue != 0.f) {
 
-		AddMovementInput(GetActorForwardVector() * AxisValue);
+			AddMovementInput(GetActorForwardVector() * AxisValue);
 
-	}
-
+		}
 }
 
 void AShooterCharacter::LookUp(float AxisValue) {

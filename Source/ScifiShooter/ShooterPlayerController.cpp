@@ -15,13 +15,7 @@ void AShooterPlayerController::BeginPlay() {
 
 	Super::BeginPlay();
 
-	Hud = CreateWidget(this, HudClass);
-
-	if (Hud != nullptr) {
-
-		Hud->AddToViewport();
-
-	}
+	GetWorld()->GetTimerManager().SetTimer(ShowHudTimer, this, &AShooterPlayerController::ShowHud, 7.0f, false);
 
 }
 
@@ -56,5 +50,19 @@ void AShooterPlayerController::GameHasEnded(class AActor* EndGameFocus, bool bIs
 	}
 	
 	GetWorldTimerManager().SetTimer(RestartTimer, this, &AShooterPlayerController::RestartLevel, RestartDelay);
+
+}
+
+void AShooterPlayerController::ShowHud() {
+
+	Hud = CreateWidget(this, HudClass);
+
+	if (Hud != nullptr) {
+
+		Hud->AddToViewport();
+
+	}
+	
+	GetWorld()->GetTimerManager().ClearTimer(ShowHudTimer);
 
 }

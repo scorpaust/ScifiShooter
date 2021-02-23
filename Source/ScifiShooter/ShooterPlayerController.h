@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "ShooterCharacter.h"
 #include "ShooterPlayerController.generated.h"
 
 /**
@@ -19,6 +20,9 @@ public:
 	AShooterPlayerController();
 
 	virtual void GameHasEnded(class AActor* EndGameFocus, bool bIsWinner) override;
+
+	UFUNCTION()
+	void ShowHud();
 
 protected:
 
@@ -42,5 +46,7 @@ private:
 	UUserWidget* Hud;
 
 	FTimerHandle RestartTimer;
+
+	FTimerHandle ShowHudTimer;
 
 };
